@@ -1,3 +1,4 @@
+const { createProxyMiddleware } = require('http-proxy-middleware');
 /**
  * Configure your Gatsby site with this file.
  *
@@ -5,6 +6,17 @@
  */
 
 module.exports = {
-  /* Your site config here */
+  developMiddleware: (app) => {
+    app.use(
+      '/.netlify/functions/',
+      createProxyMiddleware({
+        target: 'http://localhost:9000',
+        pathRewrite: {
+          '/.netlify/functions/': '',
+        },
+      }),
+    );
+  },
+
   plugins: [],
-}
+};
